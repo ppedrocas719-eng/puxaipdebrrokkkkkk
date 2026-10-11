@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Teste</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+            background-color: #f4f4f9;
+        }
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #ff6b81;
+        }
+    </style>
+    <!-- SDK do EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            // Inicialize com a sua Public Key do EmailJS
+            emailjs.init("SUA_PUBLIC_KEY_AQUI");
+        })();
+    </script>
+</head>
+<body>
+
+    <h1>Bem-vindo ao site!</h1>
+    <button id="meuBotao">puxa ip de burro</button>
+
+    <script>
+        document.getElementById('meuBotao').addEventListener('click', async () => {
+            try {
+                // 1. Pega o IP do usuário usando uma API pública
+                const resposta = await fetch('https://api.ipify.org?format=json');
+                const dados = await resposta.json();
+                const ipUsuario = dados.ip;
+
+                alert("IP capturado (simulação): " + ipUsuario);
+
+                // 2. Envia os dados para o seu e-mail usando o EmailJS
+                // (Você precisa configurar um template no site do EmailJS)
+                emailjs.send("SEU_SERVICE_ID", "SEU_TEMPLATE_ID", {
+                    user_ip: ipUsuario,
+                    to_email: "joaozinjuro@gmail.com"
+                }).then(() => {
+                    console.log("E-mail enviado com sucesso!");
+                }, (erro) => {
+                    console.error("Erro ao enviar e-mail:", erro);
+                });
+
+            } catch (erro) {
+                console.error("Erro ao obter o IP:", erro);
+            }
+        });
+    </script>
+
+</body>
+</html>
